@@ -5,7 +5,7 @@ const myAddButton = document.querySelector("#Add");
 myAddButton.textContent = 'Add Task';
 
 const myInput = document.querySelector('#Task');
-myInput.textContent = 'Enter Task';
+
 
 const myList = document.querySelector('ul');
 
@@ -82,6 +82,6 @@ function getAll(){
     };
 }
 
-// myAddButton.onclick = () => {
-//     const task = 
-// };
+myAddButton.onclick = () => {
+    const task = myInput.textContent;
+};
