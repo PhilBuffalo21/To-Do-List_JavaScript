@@ -4,6 +4,9 @@ myTitle.textContent = 'To-Do List';
 const myAddButton = document.querySelector("#Add");
 myAddButton.textContent = 'Add Task';
 
+const myInput = document.querySelector('#Task');
+myInput.textContent = 'Enter Task';
+
 const myList = document.querySelector('ul');
 
 const dbname = 'TodoDB';
@@ -79,4 +82,6 @@ function getAll(){
     };
 }
 
-myAddButton.onclick = () => {};
+// myAddButton.onclick = () => {
+//     const task = 
+// };
