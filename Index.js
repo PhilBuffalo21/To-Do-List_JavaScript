@@ -83,5 +83,30 @@ function getAll(){
 }
 
 myAddButton.onclick = () => {
-    const task = myInput.textContent;
+    const task = myInput.value.trim();
+    if(task != null){
+        const li = document.createElement('li');
+        li.textContent = task; 
+        myList.appendChild(li);
+
+        // delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete';
+        li.appendChild(deleteButton);
+        
+        addTodo(task);
+
+        deleteButton.onclick = () => {
+            deleteTodo(todo.id);
+            myList.removeChild(li);
+        };
+        
+        myInput.value = ''; // This line clears the input field
+
+            console.log('Added successfully.');
+    }
+    else{
+        console.log('The input field is empty.');
+    }
 };
