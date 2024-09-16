@@ -9,8 +9,9 @@ const myInput = document.querySelector('#Task');
 
 const myList = document.querySelector('ul');
 
+const indexedDB = window.indexedDB || window.mozIndexedDB|| window.webkitIndexedDB|| window.msIndexedDB || window.shimINdexedDB;
 const dbname = 'TodoDB';
-const dbversion = 2; 
+const dbversion = 3; 
 let db;
 const request = indexedDB.open(dbname, dbversion);
 
@@ -27,6 +28,7 @@ request.onupgradeneeded = () => {
 
 request.onsuccess = () => {
     db = request.result;
+    getAll();
 };
 
 function deleteTask(id) {
@@ -62,9 +64,15 @@ function getAll(){
     
     const request = objectStore.getAll();
 
-    request.onerror = () => {
-        const todos = request.result; 
-        todos.array.forEach(todo => {
+    request.onsuccess = () => {
+        const todos = request.result; // This should return an array of todos
+
+        if (todos.length === 0) {
+            console.log('No tasks found in the database.');
+        } else {
+            console.log('Retrieved tasks:', todos); }
+            // Debugging purposes
+        todos.forEach(todo => {
             const li = document.createElement('li');
             li.textContent = todo.task;
             myList.appendChild(li);
@@ -72,7 +80,7 @@ function getAll(){
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
             deleteButton.className = 'Delete';
-            li.addEventListener(deleteButton);
+            li.appendChild(deleteButton);
 
             deleteButton.onclick = () => {
                 deleteTask(todo.id);
@@ -94,11 +102,11 @@ myAddButton.onclick = () => {
         deleteButton.textContent = 'Delete';
         deleteButton.className = 'delete';
         li.appendChild(deleteButton);
-        
+
         addTodo(task);
 
         deleteButton.onclick = () => {
-            deleteTodo(todo.id);
+            deleteTask(todo.id);
             myList.removeChild(li);
         };
         
@@ -110,3 +118,4 @@ myAddButton.onclick = () => {
         console.log('The input field is empty.');
     }
 };
+
