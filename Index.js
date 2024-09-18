@@ -79,7 +79,7 @@ function getAll(){
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
-            deleteButton.className = 'Delete';
+            deleteButton.className = 'delete';
             li.appendChild(deleteButton);
 
             deleteButton.onclick = () => {
@@ -106,7 +106,7 @@ myAddButton.onclick = () => {
         addTodo(task);
 
         deleteButton.onclick = () => {
-            deleteTask(todo.id);
+            deleteTask(todo.id); //bug
             myList.removeChild(li);
         };
         

@@ -1,0 +1,38 @@
+.Title{
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: 1000000;
+    font-style: normal;
+}
+
+.UI{
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: 7;
+    font-style: normal;
+}
+
+
+#myList li { 
+    position: relative;
+    padding: 10px; /* Adjust as needed */
+    margin: 5px 0; /* Space between list items */
+}
+
+#myList .delete { 
+    position: static;
+    margin-left: 10px;
+    right: 10px; /* Adjust as needed */
+    top: 50%;
+    transform:  rotate(30deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Adjust as needed */
+}
+
+#myList li:hover .delete {
+    opacity: 1;
+}
