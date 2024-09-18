@@ -57,6 +57,22 @@ function addTodo(task){
         console.log('Error task failed to be added');
     };
 }
+function getATask(task){
+    const transcation = db.transaction(['todos'], 'readwrite');
+    const objectStore = transcation.objectStore('todos');
+    
+    const request = objectStore.getAllKeys();
+
+    request.onsuccess = () => {
+        const array = request.result;
+        array.forEach(key => {
+            const valueRequest = objectStore.get(key);
+            if(valueRequest.result === task){
+                return key;
+            }
+        });
+    };
+}
 
 function getAll(){
     const transcation = db.transaction(['todos'], 'readonly');
@@ -106,7 +122,7 @@ myAddButton.onclick = () => {
         addTodo(task);
 
         deleteButton.onclick = () => {
-            deleteTask(todo.id); //bug
+            deleteTask(getATask(task)); //bug
             myList.removeChild(li);
         };
         
