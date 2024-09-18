@@ -122,7 +122,7 @@ myAddButton.onclick = () => {
         addTodo(task);
 
         deleteButton.onclick = () => {
-            deleteTask(getATask(task)); //bug
+            deleteTask(getATask(task)); 
             myList.removeChild(li);
         };
         
