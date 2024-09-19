@@ -57,21 +57,26 @@ function addTodo(task){
         console.log('Error task failed to be added');
     };
 }
-function getATask(task){
-    const transcation = db.transaction(['todos'], 'readwrite');
-    const objectStore = transcation.objectStore('todos');
-    
-    const request = objectStore.getAllKeys();
+function getATask(task) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['todos'], 'readonly');
+        const objectStore = transaction.objectStore('todos');
+        const request = objectStore.getAll();
 
-    request.onsuccess = () => {
-        const array = request.result;
-        array.forEach(key => {
-            const valueRequest = objectStore.get(key);
-            if(valueRequest.result === task){
-                return key;
+        request.onsuccess = () => {
+            const todos = request.result;
+            const foundTodo = todos.find(todo => todo.task === task); // Assuming 'task' is the property name in your todo objects
+            if (foundTodo) {
+                resolve(foundTodo.id); // Assuming 'id' is the key in your todo objects
+            } else {
+                resolve(null); // or reject(new Error('Task not found'));
             }
-        });
-    };
+        };
+
+        request.onerror = () => {
+            reject(request.error);
+        };
+    });
 }
 
 function getAll(){
@@ -121,9 +126,14 @@ myAddButton.onclick = () => {
 
         addTodo(task);
 
-        deleteButton.onclick = () => {
-            deleteTask(getATask(task)); 
-            myList.removeChild(li);
+        deleteButton.onclick = async () => {
+            const taskId = await getATask(task);
+            if (taskId) {
+                deleteTask(taskId); 
+                myList.removeChild(li);
+            } else {
+                console.error('Task not found in database');
+            }
         };
         
         myInput.value = ''; // This line clears the input field
